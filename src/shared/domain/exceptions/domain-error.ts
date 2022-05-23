@@ -1,9 +1,9 @@
 export default abstract class DomainError extends Error {
-    constructor() {
+    protected constructor() {
         super();
         this.message = this.errorMessage();
     }
 
-    abstract errorCode(): string;
-    abstract errorMessage(): string;
+    public abstract errorCode(): string;
+    public abstract errorMessage(): string;
 }

@@ -7,10 +7,10 @@ export default abstract class EventSourcingRepository<
   Id extends Uuid,
   Aggregate extends VersionedAggregateRoot<Id>
 > {
-  constructor(
-    protected eventStore: EventStore,
-    protected factory: VersionedAggregateFactory<Aggregate>
-  ) {}
+    constructor(
+        protected eventStore: EventStore,
+        protected factory: VersionedAggregateFactory<Aggregate>
+    ) {}
 
   async store(aggregateRoot: Aggregate): Promise<void> {
     await this.eventStore.append(
@@ -25,7 +25,7 @@ export default abstract class EventSourcingRepository<
     return this.factory.create(events);
   }
 
-  async search(id: Id): Promise<Aggregate|null> {
+  async search(id: Id): Promise<Aggregate> {
     const events = await this.eventStore.load(id.value());
     if (events.length === 0) {
       return null;

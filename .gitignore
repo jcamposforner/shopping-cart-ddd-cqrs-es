@@ -1,2 +1,5 @@
 data
 .idea
+.tmp
+node_modules
+var/logs

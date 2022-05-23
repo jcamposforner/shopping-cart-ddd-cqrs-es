@@ -11,6 +11,7 @@ services:
     - 8080:8080
     networks:
       - backend-network
+      - elk-network
 
   mongodb:
     image: mongo:latest
@@ -40,8 +41,10 @@ services:
     networks:
       - redis-network
 
-
 networks:
+  elk-network:
+    external:
+      name: elk8.1-network
   backend-network:
     driver: bridge
   redis-network:

@@ -7,10 +7,10 @@ import AddItemCommand from "../../../../sales/shopping-cart/application/add-item
 type Handler = CommandHandler<Command>;
 type HandlerRegistry = Map<string, Handler>;
 
-export default class InMemoryCommandBus<T extends Command> implements CommandBus<Command> {
+export default class InMemoryCommandBus implements CommandBus {
     constructor(private handlersRegistry: HandlerRegistry) {}
 
-    dispatch(command: Command): void {
+    dispatch<T extends Command>(command: Command): void {
         const commandName = command.constructor.name;
         if (!this.handlersRegistry.has(commandName)) {
             throw new CommandNotRegistered(commandName);

@@ -1,5 +1,5 @@
 import Command from "./command";
 
-export default interface CommandBus<T extends Command> {
-    dispatch(command: T): void;
+export default interface CommandBus {
+    dispatch<T extends Command>(command: T): void;
 }
