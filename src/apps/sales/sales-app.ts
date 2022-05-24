@@ -1,4 +1,4 @@
-import {Server} from "../../src/server";
+import {Server} from "../../server";
 
 export default class SalesApp {
     server?: Server;

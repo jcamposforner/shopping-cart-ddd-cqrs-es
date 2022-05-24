@@ -13,7 +13,6 @@ export default class InMemoryEventBus implements EventBus {
 
     publishOnce(domainEvent: DomainEvent): void {
         const subscribers = this.eventMapping.for(domainEvent.eventName());
-
         for (const subscriberMapping of subscribers) {
             const subscriber = subscriberMapping.subscriber();
             const method = subscriberMapping.method();

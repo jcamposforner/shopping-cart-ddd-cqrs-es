@@ -29,6 +29,15 @@ import Product from "./sales/product/domain/product";
 import ProductStock from "./sales/product/domain/product-stock";
 import ProductPrice from "./sales/product/domain/product-price";
 import Uuid from "./shared/domain/value-object/uuid";
+import InMemoryEventBus from "./shared/infrastructure/bus/event/in-memory-event-bus";
+import {DomainEventSubscriberMappings} from "./shared/domain/bus/event/domain-event-subscriber";
+import WithApmTracerEventBus from "./shared/infrastructure/bus/event/apm/with-apm-tracer-event-bus";
+import {getService, initializeContainer} from "./apps/sales/dependency-injection/container";
+import ApmTracer from "./shared/infrastructure/apm/apm-tracer";
+import DomainEvent from "./shared/domain/bus/event/domain-event";
+import ShoppingCartRepository from "./sales/shopping-cart/domain/shopping-cart-repository";
+import ProductRepository from "./sales/product/domain/product-repository";
+import EventBus from "./shared/domain/bus/event/event-bus";
 
 export class Server {
     private express: express.Express;
@@ -55,30 +64,11 @@ export class Server {
         router.use(errorHandler());
         this.express.use(router);
 
+        let _ = initializeContainer();
+
         router.get('/', async (req, res, next) => {
-            const domainEventsRegistry = new Map;
-            domainEventsRegistry.set("ShoppingCartCreated", ShoppingCartCreated);
-            domainEventsRegistry.set("ShoppingCartItemAdded", ShoppingCartItemAdded);
-            const eventStore = new RedisEventStore(new Redis("cache"), domainEventsRegistry);
-            const shoppingCartRepository = new EventSourcingShoppingCartRepository(
-                eventStore,
-                // @ts-ignore
-                new PrototypeVersionedAggregateFactory(ShoppingCart)
-            );
-
-            const propertyRegistry = new Map;
-            propertyRegistry.set("ShoppingCartItem", ShoppingCartItem);
-            propertyRegistry.set("ShoppingCartId", ShoppingCartId);
-            propertyRegistry.set("ProductPrice", ProductPrice);
-            propertyRegistry.set("ProductStock", ProductStock);
-            propertyRegistry.set("ProductId", ProductId);
-            propertyRegistry.set("Uuid", Uuid);
-
-            const productRepository = new MongoProductRepository(
-                mongoClient,
-                new DefaultAggregateDeserializer(propertyRegistry),
-                new DefaultAggregateSerializer()
-            );
+            const shoppingCartRepository: ShoppingCartRepository = getService("ShoppingCartRepository")
+            const productRepository: ProductRepository = getService("ProductRepository");
             const addItemService = new AddItemToCart(
                 shoppingCartRepository,
                 new BusProductSearcher(
@@ -97,6 +87,12 @@ export class Server {
 
             await productRepository.store(product);
             await addItemService.add(id.value(), productId, 5);
+
+
+            const eventBus: EventBus = getService("EventBus")
+            await eventBus.publish(cart.pullDomainEvents());
+
+
             return res.send({
                 status: 'ok'
             })

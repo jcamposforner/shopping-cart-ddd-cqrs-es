@@ -2,7 +2,7 @@ import assert from 'assert';
 // @ts-ignore
 import { AfterAll, BeforeAll, Given, Then } from 'cucumber';
 import request from 'supertest';
-import SalesApp from "../../../../apps/sales/sales-app";
+import SalesApp from "../../../../src/apps/sales/sales-app";
 
 let _request: request.Test;
 let _response: request.Response;
