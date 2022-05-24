@@ -1,8 +1,8 @@
 import DefaultAggregateDeserializer
-    from "../../../../shared/domain/aggregate/serializer/default-aggregate-deserializer";
+    from "../../../../../shared/domain/aggregate/serializer/default-aggregate-deserializer";
 import {addService, getService} from "../container";
-import DefaultAggregateSerializer from "../../../../shared/domain/aggregate/serializer/default-aggregate-serializer";
-import AggregateDeserializer from "../../../../shared/domain/aggregate/serializer/aggregate-deserializer";
+import DefaultAggregateSerializer from "../../../../../shared/domain/aggregate/serializer/default-aggregate-serializer";
+import AggregateDeserializer from "../../../../../shared/domain/aggregate/serializer/aggregate-deserializer";
 
 export const registerSerializers = (): void => {
     addService(new DefaultAggregateDeserializer(

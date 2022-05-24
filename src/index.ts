@@ -5,7 +5,8 @@ const apm = require('elastic-apm-node').start({
 
 import ElasticApmTracer from "./shared/infrastructure/apm/elastic/elastic-apm-tracer";
 import SalesApp from "./apps/sales/sales-app";
-import { addService } from "./apps/sales/dependency-injection/container";
+import { addService } from "./apps/sales/config/dependency-injection/container";
+import "reflect-metadata"
 
 addService(new ElasticApmTracer(apm), "ApmTracer");
 

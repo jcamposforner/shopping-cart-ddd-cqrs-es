@@ -1,12 +1,13 @@
 // @ts-ignore
 
 import {Container} from "inversify";
-import {Newable} from "../../../shared/domain/types/newable";
+import {Newable} from "../../../../shared/domain/types/newable";
 import {domainEventsRegistry} from "./mapping-registry/domain-event-registry";
 import {propertyRegistry} from "./mapping-registry/property-registry";
 import {registerRepositories} from "./persistence/repositories";
 import {registerSerializers} from "./serializer/deserializers";
 import {registerBuses} from "./bus/buses";
+import {registerApplicationServices} from "./application/services";
 
 const container = new Container({ autoBindInjectable: false });
 
@@ -27,6 +28,7 @@ async function initializeContainer() {
     registerSerializers();
     registerBuses();
     await registerRepositories();
+    registerApplicationServices();
 }
 
 export {container, getService, addService, initializeContainer};

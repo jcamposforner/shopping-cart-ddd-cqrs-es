@@ -23,6 +23,7 @@
     "@types/supertest": "^2.0.12",
     "@types/uuid": "^8.3.4",
     "@types/inversify": "^2.0.33",
+    "@types/glob": "^7.2.0",
     "concurrently": "^7.1.0",
     "cucumber": "^6.0.5",
     "jest": "^28.1.0",
@@ -50,7 +51,8 @@
     "tsoa": "^4.0.0",
     "uuid": "^8.3.2",
     "winston": "^3.7.2",
-    "inversify": "^6.0.1"
+    "inversify": "^6.0.1",
+    "glob": "^8.0.3"
   },
   "nodemonConfig": {
     "watch": [
