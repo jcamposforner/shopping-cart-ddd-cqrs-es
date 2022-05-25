@@ -8,6 +8,8 @@ import {registerRepositories} from "./persistence/repositories";
 import {registerSerializers} from "./serializer/deserializers";
 import {registerBuses} from "./bus/buses";
 import {registerApplicationServices} from "./application/services";
+import {registerControllers} from "./controller/controllers";
+import {registerContexts} from "./request-context/request-context";
 
 const container = new Container({ autoBindInjectable: false });
 
@@ -22,6 +24,7 @@ const getService = <T>(serviceName: ServiceName<T>): T => {
 }
 
 async function initializeContainer() {
+
     addService(domainEventsRegistry, "domainEventsRegistryMap");
     addService(propertyRegistry, "propertyRegistryMap");
 
@@ -29,6 +32,8 @@ async function initializeContainer() {
     registerBuses();
     await registerRepositories();
     registerApplicationServices();
+    registerControllers();
+    registerContexts();
 }
 
 export {container, getService, addService, initializeContainer};
